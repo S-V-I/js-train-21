@@ -47,13 +47,13 @@ class Musician {
   get name() {
     // гетер для приватного поля #name
     // повертає значення приватного поля #name
-    return `${this.#name}`;
+    return this.#name;
   }
 
   get instrument() {
     // гетер для приватного поля #instrument
     // повертає значення приватного поля #instrument
-    return `${this.#instrument}`;
+    return this.#instrument;
   }
 
   set name(newName) {
@@ -130,22 +130,22 @@ class Guitarist extends Musician {
   }
 
   get band() {
-    return `${this.#band}`;
+    return this.#band;
   }
 
   set band(newBand) {
     this.#band = newBand;
   }
 
-  joinBand() {
+  joinBand(band) {
     this.#band = band;
   }
 
   play() {
     console.log(
-      `${super.name}` +
+      `${this.name}` +
         " грає на " +
-        `${super.instrument}` +
+        `${this.instrument}` +
         " в групі " +
         `${this.#band}`
     );
@@ -204,28 +204,26 @@ class Bassist extends Musician {
 
   constructor(name, instrument, band) {
     super(name, instrument);
-    // this.name = name;
-    // this.instrument = instrument;
     this.#band = band;
   }
 
   get band() {
-    return `${this.#band}`;
+    return this.#band;
   }
 
   set band(newBand) {
     this.#band = newBand;
   }
 
-  joinBand() {
+  joinBand(band) {
     this.#band = band;
   }
 
   play() {
     console.log(
-      `${super.name}` +
+      `${this.name}` +
         " грає на " +
-        `${super.instrument}` +
+        `${this.instrument}` +
         " в групі " +
         `${this.#band}`
     );
@@ -286,10 +284,10 @@ class Band {
   }
 
   get name() {
-    return `${this.#name}`;
+    return this.#name;
   }
   get members() {
-    return `${this.#members}`;
+    return this.#members;
   }
 
   set name(newName) {
@@ -298,8 +296,8 @@ class Band {
 
   addMember(newMember) {
     if (newMember instanceof Musician) {
+      newMember.band = this.#name;
       this.#members.push(newMember);
-      newMember.band = this;
     } else {
       console.log("Новий учасник повинен бути екземпляром класу Musician");
     }
@@ -339,13 +337,13 @@ class Performance {
   }
 
   get band() {
-    return `${this.#band}`;
+    return this.#band;
   }
   get location() {
-    return `${this.#location}`;
+    return this.#location;
   }
   get date() {
-    return `${this.#date}`;
+    return this.#date;
   }
 
   info() {
@@ -385,18 +383,17 @@ class Concert extends Performance {
     this.#ticketPrice = ticketPrice;
   }
   get ticketPrice() {
-    return `${this.#ticketPrice}`;
+    return this.#ticketPrice;
   }
-  set ticketPrice(newPrice) {
-    this.ticketPrice = newPrice;
+  set ticketPrice(newTicketPrice) {
+    this.ticketPrice = newTicketPrice;
   }
   info() {
     console.log(
-      `Гурт ${super.band.name} виступить в ${super.location} ${
-        super.date
-      }, ціна квитка ${this.#ticketPrice}`
+      `Гурт ${this.band.name} виступить в ${
+        this.location
+      } ${this.date.toLocaleDateString()}, ціна квитка ${this.#ticketPrice}`
     );
-    // TypeError: (intermediate value).toLocaleDateString() is not a function
   }
 }
 // console.log(new Concert("Band", "Location", "Date", "TicketPrice").info());
@@ -530,8 +527,7 @@ const guitarist = new Guitarist("Jimmy Page", "гітара", "Led Zeppelin");
  * | instrument  | "бас-гітара"     |
  * | band        | "The Beatles"    |
  */
-const bassist = new Bassist("Paul McCartney", "бас-гітара");
-bassist.band = "The Beatles";
+const bassist = new Bassist("Paul McCartney", "бас-гітара", "The Beatles");
 
 // Створення band екземпляру класу Band
 /*
